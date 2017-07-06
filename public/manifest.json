@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Interface Module",
+  "name": "Interface de gestion de modules de formation",
   "icons": [
     {
       "src": "favicon.ico",
