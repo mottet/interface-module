@@ -1,38 +1,50 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import ModuleButton from './ModuleButton';
+import {selectMode, addModule, deleteModule} from './actions';
 
-export default class ModuleList extends Component {
-
-	constructor(props) {
-	    super(props);
-    this.handleClickModule = this.handleClickModule.bind(this);
-  	}
-
-	handleClickModule(index) {
-		this.props.handleClickModule(index)
-	}
-
+class ModuleList extends Component {
 	render() {
-		let indexModule = -1;
 		return (
 			<div>
 			<div className="HeadList">
           	User's modules
         	</div>
-			<table className="List">
-			<tbody>
-				{this.props.modules.map(module =>
-					<tr>
+			<div className="List">
+				{this.props.moduleList.map(module =>
 					<ModuleButton 
+					key={module.id}
 					nameModule={module.moduleName}
-					indexModule={++indexModule}
-					handleClickModule={this.handleClickModule}
+					clickSelect={() => this.props.selectMode(module.id)}
+					clickDelete={() => this.props.deleteModule(module.id)}
 					/>
-					</tr>
 				)}
-			</tbody>
-			</table>
+			</div>
+			<div className="ListItem">
+				<button 
+				className="ReturnButton"
+				onClick={this.props.addModule}
+				>
+					Add
+				</button>
+			</div>
 			</div>
 		);
 	}
 }
+
+function mapStateToProps(state) {
+  return { 
+    moduleList: state.moduleList,
+    selectModule: state.selectModule }
+}
+
+function mapDispatchToProps(dispatch) {
+	return {
+		selectMode: (id) => dispatch(selectMode("LESSON_LIST", id)),
+		deleteModule: (id) => dispatch(deleteModule(id)),
+		addModule: () => dispatch(addModule("New Module"))
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ModuleList)
